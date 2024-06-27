@@ -1,0 +1,13 @@
+table{
+    width: 100%;
+}
+
+.mat-form-field{
+    font-size: 14px;
+    width: 100%;
+}
+
+.buttons-product{   
+     display: flex;
+    justify-content: space-between;
+}

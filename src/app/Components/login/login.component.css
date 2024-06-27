@@ -1,0 +1,28 @@
+.body{
+    display: flex;
+    justify-content: center;
+    height: 100%;
+    align-items: center;
+    background-color: #f5f5f5;
+}
+
+.loginCard{
+    max-width: 450px !important;
+    margin:4em auto;
+    text-align:center;
+    max-height:600px;
+    padding: 4em;
+}
+
+.header{
+    text-align: center;
+    margin-bottom: 2em;
+}
+
+.header h2{
+    font-size: 2em;
+}
+
+.full-width{
+    width: 90%;
+}

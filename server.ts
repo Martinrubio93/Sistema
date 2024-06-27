@@ -3,16 +3,40 @@ import { CommonEngine } from '@angular/ssr';
 import express from 'express';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, resolve } from 'node:path';
-import bootstrap from './src/main.server';
+import AppServerModule from './src/main.server';
+
 
 // The Express app is exported so that it can be used by serverless Functions.
 export function app(): express.Express {
-  const server = express();
+ 
   const serverDistFolder = dirname(fileURLToPath(import.meta.url));
   const browserDistFolder = resolve(serverDistFolder, '../browser');
   const indexHtml = join(serverDistFolder, 'index.server.html');
 
   const commonEngine = new CommonEngine();
+
+  const server = express();
+const cors = require('cors');
+const createProxyMiddleware = require('http-proxy-middleware');
+
+  // const whiteList = ['http://localhost:4200'];
+server.use(cors({}));
+
+server.get('/', createProxyMiddleware({ target: 'http://localhost:4200', changeOrigin: true }));
+
+  server.listen(3000, () => {
+    console.log('Server started on port 3000');
+
+  })
+
+  // server.use(cors({
+  //   origin:"http://localhost:4200"
+
+  // }));
+
+
+
+
 
   server.set('view engine', 'html');
   server.set('views', browserDistFolder);
@@ -20,17 +44,18 @@ export function app(): express.Express {
   // Example Express Rest API endpoints
   // server.get('/api/**', (req, res) => { });
   // Serve static files from /browser
-  server.get('*.*', express.static(browserDistFolder, {
-    maxAge: '1y'
+  server.get('**', express.static(browserDistFolder, {
+    maxAge: '1y',
+    index: 'index.html',
   }));
 
   // All regular routes use the Angular engine
-  server.get('*', (req, res, next) => {
+  server.get('**', (req, res, next) => {
     const { protocol, originalUrl, baseUrl, headers } = req;
 
     commonEngine
       .render({
-        bootstrap,
+        bootstrap: AppServerModule,
         documentFilePath: indexHtml,
         url: `${protocol}://${headers.host}${originalUrl}`,
         publicPath: browserDistFolder,

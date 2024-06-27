@@ -1,0 +1,23 @@
+.buttonTotal{
+   background-color: #588ef3;
+    color: white;
+    width: 75%;
+    display: flex;
+    justify-content: center;
+    align-items: end;
+    margin: 0 auto;
+    padding: 10px;
+    border-radius:5px ;
+}
+
+.buttonTotal p{
+    margin: 0;
+}
+
+.full-width{
+    width: 100%;
+}
+
+table{
+    width: 100%;
+}
